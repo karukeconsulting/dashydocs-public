@@ -1,0 +1,5 @@
+[requires]
+libzip/1.5.2@bincrafters/stable
+Catch2/2.11.0@catchorg/stable
+rapidxml/1.13@bincrafters/stable
+icu/64.2@bincrafters/stable

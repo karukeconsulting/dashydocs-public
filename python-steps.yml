@@ -1,0 +1,7 @@
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+  - script: python -m pip install conan==1.21.0
+    displayName: Installing conan package manager
+    failOnStderr: true

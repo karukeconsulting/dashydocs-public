@@ -4,16 +4,31 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  batch: true
+  branches:
+    include:
+    - master
+    - features/*
+    exclude:
+    - features/experimental/*
+  paths:
+    exclude:
+    - README.md
 
-pool:
-  vmImage: 'ubuntu-latest'
+pr:
+  autoCancel: false
+  branches:
+    include:
+    - master
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+- job: Windows_Build
+  displayName: Windows Build
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  pool:
+    vmImage: windows-2019
+
+  steps:
+  - template: ./git-steps.yml
+  - template: ./python-steps.yml
+  - template: ./windows-steps.yml
