@@ -1,0 +1,41 @@
+steps:
+  - script: conan install . -m -g visual_studio -r conan-center -if PCBuild
+    displayName: Install conan packages
+  - script: conan install . -v
+    displayName: Verify conan packages
+  - task: VSBuild@1
+    displayName: Building DashyDocs solution in 'debug' mode
+    inputs:
+      solution: PCBuild\*.sln
+      vsVersion: 16.0
+      platform: 'x64'
+      configuration: 'debug'
+      msbuildArchitecture: 'x64'
+      createLogFile: true
+      logFileVerbosity: 'detailed'
+  - task: VSBuild@1
+    displayName: Building DashyDocs solution in 'release' mode
+    inputs:
+      solution: PCBuild\*.sln
+      vsVersion: 16.0
+      platform: 'x64'
+      configuration: 'release'
+      msbuildArchitecture: 'x64'
+      createLogFile: true
+      logFileVerbosity: 'detailed'
+  - task: CopyFiles@2
+    displayName: Copy files from 'build' folder to temporary area
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/PCBuild/build'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/zip/build'
+  - task: CopyFiles@2
+    displayName: Copy files from 'inter' folder to temporary area
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/PCBuild/inter'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/zip/inter'
+  - task: ArchiveFiles@2
+    displayName: Archiving DashyDocs build output
+    inputs:
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/dashydocs-$(Build.BuildNumber).zip'
+      archiveType: 'zip'

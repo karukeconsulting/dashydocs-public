@@ -1,0 +1,6 @@
+[submodule "deps/dashydocs-lib"]
+	path = deps/dashydocs-lib
+	url = https://github.com/karukeconsulting/dashydocs-lib.git
+[submodule "deps/CLI11"]
+	path = deps/CLI11
+	url = https://github.com/CLIUtils/CLI11.git

@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+    - features/*
+    exclude:
+    - features/experimental/*
+  paths:
+    exclude:
+    - README.md
+
+pr:
+  autoCancel: false
+  branches:
+    include:
+    - master
+
+jobs:
+- job: Windows_Build
+  displayName: Windows Build
+
+  pool:
+    vmImage: windows-2019
+
+  steps:
+  - template: ./git-steps.yml
+  - template: ./python-steps.yml
+  - template: ./windows-steps.yml
